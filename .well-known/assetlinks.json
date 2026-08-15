@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.gagaga210210210_cmyk.twa",
+    "sha256_cert_fingerprints": ["FF:9E:5A:53:D2:D9:F7:FF:3D:05:21:D5:39:46:61:13:DB:C0:8C:7A:1B:5B:3E:4F:3F:00:3B:33:2E:0C:03:ED"]
+  }
+}]
