@@ -2,16 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>ОЛЕГ ЛУП — из аудио в семпл</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ОЛЕГ ШОТ — из аудио в семпл</title>
 <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#000000">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ОЛЕГ ЛУП">
 <style>
   :root{
     --text: #F5F5F7;
@@ -40,6 +36,9 @@
     --sample: var(--gray);
   }
   *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  *:focus{ outline: none; }
+  *::-moz-focus-inner{ border:0; }
+  button, input, .chip, .row, .play-btn, .chk{ -webkit-tap-highlight-color: transparent; outline:none; }
   html,body{
     margin:0; padding:0; min-height:100%;
     background:#000;
@@ -57,20 +56,20 @@
   body::before{
     width:80vw; height:80vw; top:-30vw; left:-25vw;
     background: radial-gradient(circle at 30% 30%, var(--blue), transparent 70%);
+    animation: drift1 26s ease-in-out infinite alternate;
   }
   body::after{
     width:90vw; height:90vw; bottom:-35vw; right:-30vw;
     background: radial-gradient(circle at 60% 60%, var(--purple), transparent 70%);
+    animation: drift2 32s ease-in-out infinite alternate;
   }
   .blob3{
     content:''; position:fixed; width:70vw; height:70vw; top:35vh; left:20vw;
     border-radius:50%; filter: blur(100px); z-index:-1; opacity:0.35;
     background: radial-gradient(circle, var(--green), transparent 70%);
     pointer-events:none;
+    animation: drift3 22s ease-in-out infinite alternate;
   }
-  .motion-on body::before{ animation: drift1 26s ease-in-out infinite alternate; }
-  .motion-on body::after{ animation: drift2 32s ease-in-out infinite alternate; }
-  .motion-on .blob3{ animation: drift3 22s ease-in-out infinite alternate; }
   @keyframes drift1{
     0%{ transform: translate(0,0) scale(1); }
     100%{ transform: translate(6vw,8vh) scale(1.15); filter: blur(90px) hue-rotate(25deg); }
@@ -117,9 +116,11 @@
     position:relative;
     overflow:hidden;
     transform: translateY(0) scale(1);
-    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, background .35s;
+    transition: transform .4s cubic-bezier(0.25, 1.5, 0.5, 1), box-shadow .35s, background .35s;
     animation: floaty 7s ease-in-out infinite;
     will-change: transform;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
   }
   .card:nth-of-type(2n){ animation-delay: -2.3s; }
   .card:nth-of-type(3n){ animation-delay: -4.6s; }
@@ -130,23 +131,6 @@
   .card.tilting{ animation-play-state: paused; transition: box-shadow .35s; }
   .card:hover{
     background: rgba(255,255,255,0.1);
-  }
-  .card:active{
-    transform: scale(0.985);
-    transition: transform .12s ease;
-  }
-  .card::after{
-    content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
-    background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%);
-    transform: translateX(-140%); opacity:0;
-  }
-  .card.shimmer::after{
-    animation: shimmerSweep .75s ease-out;
-  }
-  @keyframes shimmerSweep{
-    0%{ transform: translateX(-140%) rotate(0deg); opacity:0; }
-    15%{ opacity:0.55; }
-    100%{ transform: translateX(140%) rotate(0deg); opacity:0; }
   }
   .card-title{
     font-size: 13px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px;
@@ -187,28 +171,45 @@
   .hint{ font-size:11.5px; color: var(--text-3); line-height:1.4; margin-top:8px; }
 
   input[type=range]{
-    -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:4px;
-    background: rgba(255,255,255,0.15);
-    box-shadow: inset 0 1.5px 4px rgba(0,0,0,0.5), inset 0 -1px 0 rgba(255,255,255,0.06);
-    outline:none;
+    -webkit-appearance:none; appearance:none; width:100%; height:32px;
+    background: transparent; outline:none; margin:0; padding:0;
   }
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none; width:26px; height:26px; border-radius:50%;
-    background: radial-gradient(circle at 35% 30%, #fff 0%, rgba(255,255,255,0.85) 35%, rgba(220,230,255,0.55) 100%);
-    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
-    cursor:pointer; margin-top:-10.5px;
-    border: 1px solid rgba(255,255,255,0.6);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(120,140,180,0.3), inset 0 2px 2px rgba(255,255,255,0.9);
-  }
-  input[type=range]::-moz-range-thumb{
-    width:26px; height:26px; border-radius:50%;
-    background: radial-gradient(circle at 35% 30%, #fff 0%, rgba(255,255,255,0.85) 35%, rgba(220,230,255,0.55) 100%);
-    border: 1px solid rgba(255,255,255,0.6); cursor:pointer;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.45), inset 0 -2px 3px rgba(120,140,180,0.3), inset 0 2px 2px rgba(255,255,255,0.9);
+  input[type=range]::-webkit-slider-runnable-track{
+    height:8px; border-radius:6px;
+    background: linear-gradient(to right, var(--blue) var(--pct,50%), rgba(255,255,255,0.12) var(--pct,50%));
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.55), inset 0 -1px 0 rgba(255,255,255,0.06);
   }
   input[type=range]::-moz-range-track{
-    height:6px; border-radius:4px; background:rgba(255,255,255,0.15);
-    box-shadow: inset 0 1.5px 4px rgba(0,0,0,0.5);
+    height:8px; border-radius:6px; background: rgba(255,255,255,0.12);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.55);
+  }
+  input[type=range]::-moz-range-progress{
+    height:8px; border-radius:6px; background: var(--blue);
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:16px; height:32px; border-radius:10px;
+    margin-top:-12px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.98) 0%, rgba(205,222,255,0.65) 45%, rgba(150,175,230,0.4) 100%);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    cursor:pointer;
+    border: 1px solid rgba(255,255,255,0.65);
+    box-shadow:
+      0 4px 14px rgba(0,0,0,0.5),
+      inset 0 2px 3px rgba(255,255,255,0.95),
+      inset 0 -4px 5px rgba(110,130,190,0.4),
+      inset 2px 0 2px rgba(191,90,242,0.15),
+      inset -2px 0 2px rgba(100,210,255,0.15);
+    transition: transform .2s cubic-bezier(0.25, 1.5, 0.5, 1);
+  }
+  input[type=range]:active::-webkit-slider-thumb{ transform: scaleX(0.82) scaleY(1.06); }
+  input[type=range]::-moz-range-thumb{
+    width:16px; height:32px; border-radius:10px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.98) 0%, rgba(205,222,255,0.65) 45%, rgba(150,175,230,0.4) 100%);
+    border: 1px solid rgba(255,255,255,0.65); cursor:pointer;
+    box-shadow:
+      0 4px 14px rgba(0,0,0,0.5),
+      inset 0 2px 3px rgba(255,255,255,0.95),
+      inset 0 -4px 5px rgba(110,130,190,0.4);
   }
 
   .btn{
@@ -220,21 +221,16 @@
     border-radius: 999px; cursor:pointer; width:100%;
     position:relative; overflow:hidden;
     box-shadow: 0 6px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.15);
-    transition: transform .15s cubic-bezier(.22,1,.36,1), background .2s;
+    transition: transform .4s cubic-bezier(0.25, 1.5, 0.5, 1), background .2s;
+    outline: none; -webkit-tap-highlight-color: transparent;
   }
-  .btn::after{
-    content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
-    background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
-    transform: translateX(-140%); opacity:0;
-  }
-  .btn.shimmer::after{ animation: shimmerSweep .6s ease-out; }
-  .btn:active{ background: rgba(255,255,255,0.2); transform: scale(0.96); }
+  .btn:active{ background: rgba(255,255,255,0.2); transform: scale(0.92); }
   .btn.primary{
     background: linear-gradient(135deg, var(--blue), var(--indigo));
     color:#fff; border-color: transparent;
     box-shadow: 0 8px 24px rgba(10,132,255,0.45), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.15);
   }
-  .btn.primary:active{ filter: brightness(0.92); transform: scale(0.96); }
+  .btn.primary:active{ filter: brightness(0.92); transform: scale(0.92); }
   .btn:disabled{ opacity:0.35; pointer-events:none; }
   .btn-row{ display:flex; gap:10px; margin-top:12px; }
 
@@ -257,8 +253,9 @@
     background: var(--glass-strong); border:1px solid var(--glass-border);
     color: var(--text); display:flex; align-items:center; justify-content:center;
     cursor:pointer; font-size:14px;
+    transition: transform .35s cubic-bezier(0.25, 1.5, 0.5, 1), background .15s;
   }
-  .play-btn:active{ background: rgba(255,255,255,0.22); }
+  .play-btn:active{ background: rgba(255,255,255,0.22); transform: scale(0.88); }
   .row-mid{ flex:1; min-width:0; }
   .label-pill{
     display:inline-block; font-size:10px; font-weight:800; text-transform:uppercase;
@@ -275,7 +272,9 @@
     width:22px; height:22px; min-width:22px; border:1.5px solid var(--glass-border); border-radius:7px;
     display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px;
     background: var(--glass);
+    transition: transform .35s cubic-bezier(0.25, 1.5, 0.5, 1);
   }
+  .chk:active{ transform: scale(0.85); }
   .chk.on{ background: var(--blue); border-color: var(--blue); color:#fff; font-weight:900; }
 
   .bottom-bar{
@@ -300,8 +299,9 @@
     padding:8px 14px; border:1px solid var(--glass-border); border-radius:999px;
     font-size:12px; font-weight:600; cursor:pointer; color:var(--text-2);
     background: var(--glass); white-space:nowrap; user-select:none;
-    transition: background .12s, color .12s;
+    transition: background .12s, color .12s, transform .35s cubic-bezier(0.25, 1.5, 0.5, 1);
   }
+  .chip:active{ transform: scale(0.9); }
   .chip.active{
     background: linear-gradient(135deg, var(--blue), var(--indigo));
     color:#fff; border-color: transparent; font-weight:700;
@@ -310,26 +310,12 @@
 </style>
 </head>
 <body>
-<script>
-  // фоновые блобы анимируем только если устройство это тянет без дёрганья —
-  // на телефонах и при "уменьшить анимацию" оставляем их статичными
-  (function(){
-    var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!coarse && !reduced){ document.body.classList.add('motion-on'); }
-  })();
-  if('serviceWorker' in navigator){
-    window.addEventListener('load', function(){
-      navigator.serviceWorker.register('sw.js').catch(function(){});
-    });
-  }
-</script>
 <div class="blob3"></div>
 <div id="app">
 
   <header>
     <div>
-      <h1>ОЛЕГ<span>ШОТ</span></h1>
+      <h1>ОЛЕГ <span>ШОТ</span></h1>
       <div class="sub">из аудио в семпл</div>
     </div>
     <span class="rec-dot" id="recDot"></span>
@@ -342,12 +328,6 @@
       <div class="filename mono" id="fileName"></div>
     </div>
     <input type="file" id="fileInput" accept="audio/*">
-  </div>
-
-  <div class="card" id="libSection">
-    <div class="card-title">Библиотека <span id="libCount" class="mono" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-3);font-size:11px;"></span></div>
-    <div id="libList"></div>
-    <div class="empty-state" id="libEmpty">Пусто</div>
   </div>
 
   <div class="card hidden" id="waveSection">
@@ -450,126 +430,12 @@
     audioCtx: null,
     fileBaseName: "sample",
     loopCategories: { Kick:true, Snare:true, HiHat:true, Perc:true, Tone:false, Sample:false },
-    loopBuffer: null
+    loopBuffer: null,
+    currentAudioSource: null
   };
 
   const LABEL_COLORS = { Kick:'var(--kick)', Snare:'var(--snare)', HiHat:'var(--hihat)', Perc:'var(--perc)', Tone:'var(--tone)', Sample:'var(--sample)' };
   const LABEL_CYCLE = ['Kick','Snare','HiHat','Perc','Tone','Sample'];
-
-  // ---------- offline library (IndexedDB) ----------
-  const LIB_DB_NAME = 'olegshot_db', LIB_DB_VERSION = 1, LIB_STORE = 'packs';
-  function libOpenDB(){
-    return new Promise((resolve, reject) => {
-      if(!('indexedDB' in window)){ reject(new Error('no indexeddb')); return; }
-      const req = indexedDB.open(LIB_DB_NAME, LIB_DB_VERSION);
-      req.onupgradeneeded = () => {
-        const db = req.result;
-        if(!db.objectStoreNames.contains(LIB_STORE)){
-          db.createObjectStore(LIB_STORE, { keyPath:'id', autoIncrement:true });
-        }
-      };
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => reject(req.error);
-    });
-  }
-  async function libSavePack(name, files){
-    try{
-      const db = await libOpenDB();
-      await new Promise((resolve, reject) => {
-        const tx = db.transaction(LIB_STORE, 'readwrite');
-        tx.objectStore(LIB_STORE).add({ name, createdAt: Date.now(), files });
-        tx.oncomplete = resolve;
-        tx.onerror = () => reject(tx.error);
-      });
-    }catch(e){}
-  }
-  async function libGetAll(){
-    try{
-      const db = await libOpenDB();
-      return await new Promise((resolve, reject) => {
-        const tx = db.transaction(LIB_STORE, 'readonly');
-        const req = tx.objectStore(LIB_STORE).getAll();
-        req.onsuccess = () => resolve(req.result || []);
-        req.onerror = () => reject(req.error);
-      });
-    }catch(e){ return []; }
-  }
-  async function libDelete(id){
-    try{
-      const db = await libOpenDB();
-      await new Promise((resolve, reject) => {
-        const tx = db.transaction(LIB_STORE, 'readwrite');
-        tx.objectStore(LIB_STORE).delete(id);
-        tx.oncomplete = resolve;
-        tx.onerror = () => reject(tx.error);
-      });
-    }catch(e){}
-  }
-  function libDownloadFiles(fileName, files){
-    if(files.length===1){
-      const blob = new Blob([files[0].data], {type:'audio/wav'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = files[0].name;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-      return;
-    }
-    const zipBytes = buildZip(files);
-    const blob = new Blob([zipBytes], {type:'application/zip'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = fileName;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 4000);
-  }
-  async function renderLibrary(){
-    const packs = await libGetAll();
-    packs.sort((a,b) => b.createdAt - a.createdAt);
-    libCount.textContent = packs.length ? ('· ' + packs.length) : '';
-    libEmpty.classList.toggle('hidden', packs.length>0);
-    libList.innerHTML = '';
-    packs.forEach(pack => {
-      const row = document.createElement('div');
-      row.className = 'row';
-
-      const dlBtn = document.createElement('div');
-      dlBtn.className = 'play-btn';
-      dlBtn.textContent = '⬇';
-      dlBtn.addEventListener('click', () => {
-        const safe = pack.name.replace(/[^a-zA-Z0-9а-яА-ЯёЁ_-]+/g,'_') || 'pack';
-        libDownloadFiles(pack.files.length===1 ? safe+'.wav' : safe+'.zip', pack.files);
-      });
-
-      const mid = document.createElement('div');
-      mid.className = 'row-mid';
-      const title = document.createElement('div');
-      title.className = 'mono';
-      title.style.fontSize = '14px';
-      title.textContent = pack.name;
-      const meta = document.createElement('div');
-      meta.className = 'row-meta';
-      const d = new Date(pack.createdAt);
-      const pad = n => String(n).padStart(2,'0');
-      meta.textContent = pack.files.length + ' файл(ов) · ' + pad(d.getDate()) + '.' + pad(d.getMonth()+1) + '.' + d.getFullYear() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-      mid.appendChild(title);
-      mid.appendChild(meta);
-
-      const delBtn = document.createElement('div');
-      delBtn.className = 'play-btn';
-      delBtn.textContent = '✕';
-      delBtn.addEventListener('click', async () => {
-        if(!confirm('Удалить «' + pack.name + '»?')) return;
-        await libDelete(pack.id);
-        renderLibrary();
-      });
-
-      row.appendChild(dlBtn);
-      row.appendChild(mid);
-      row.appendChild(delBtn);
-      libList.appendChild(row);
-    });
-  }
 
   // ---------- dom ----------
   const $ = id => document.getElementById(id);
@@ -583,7 +449,6 @@
   const foundCountEl = $('foundCount'), selCountEl = $('selCount');
   const foundCount2El = $('foundCount2'), selCount2El = $('selCount2');
   const exportBtn = $('exportBtn'), recDot = $('recDot');
-  const libList = $('libList'), libEmpty = $('libEmpty'), libCount = $('libCount');
 
   const loopSection = $('loopSection');
   const bpmSlider = $('bpmSlider'), bpmVal = $('bpmVal');
@@ -598,6 +463,28 @@
     }
     if(state.audioCtx.state === 'suspended') state.audioCtx.resume();
     return state.audioCtx;
+  }
+
+  // Stop whatever is currently playing (one-shot preview or loop) before
+  // starting a new sound, so previews never overlap each other.
+  function stopCurrentAudio(){
+    if(state.currentAudioSource){
+      try{ state.currentAudioSource.stop(0); }catch(e){}
+      state.currentAudioSource = null;
+    }
+  }
+  function playBuffer(channelsData, sampleRate){
+    stopCurrentAudio();
+    const ctx = getAudioCtx();
+    const numCh = channelsData.length;
+    const buf = ctx.createBuffer(numCh, channelsData[0].length, sampleRate);
+    for(let c=0;c<numCh;c++) buf.copyToChannel(channelsData[c], c);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.onended = () => { if(state.currentAudioSource === src) state.currentAudioSource = null; };
+    state.currentAudioSource = src;
+    src.start();
   }
 
   function styleRangeFill(el){
@@ -1069,14 +956,7 @@
 
   function playSlice(idx){
     const s = state.slices[idx];
-    const ctx = getAudioCtx();
-    const numCh = s.channelsData.length;
-    const buf = ctx.createBuffer(numCh, s.channelsData[0].length, state.sampleRate);
-    for(let c=0;c<numCh;c++) buf.copyToChannel(s.channelsData[c], c);
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    src.connect(ctx.destination);
-    src.start();
+    playBuffer(s.channelsData, state.sampleRate);
   }
 
   // ---------- WAV encoding ----------
@@ -1201,7 +1081,6 @@
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 4000);
-    libSavePack(state.fileBaseName + ' — пак (' + selected.length + ')', files).then(renderLibrary);
   });
 
   // ---------- loop generator ----------
@@ -1376,31 +1255,21 @@
 
   function playLoop(){
     if(!state.loopBuffer) return;
-    const ctx = getAudioCtx();
-    const numCh = state.loopBuffer.channelsData.length;
-    const len = state.loopBuffer.channelsData[0].length;
-    const buf = ctx.createBuffer(numCh, len, state.loopBuffer.sampleRate);
-    for(let c=0;c<numCh;c++) buf.copyToChannel(state.loopBuffer.channelsData[c], c);
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    src.connect(ctx.destination);
-    src.start();
+    playBuffer(state.loopBuffer.channelsData, state.loopBuffer.sampleRate);
   }
 
   function downloadLoop(){
     if(!state.loopBuffer) return;
     const wav = encodeWAV(state.loopBuffer.channelsData, state.loopBuffer.sampleRate);
-    const fname = state.fileBaseName + '_loop_' + bpmSlider.value + 'bpm.wav';
     const blob = new Blob([wav], {type:'audio/wav'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = fname;
+    a.download = state.fileBaseName + '_loop_' + bpmSlider.value + 'bpm.wav';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 4000);
-    libSavePack(state.fileBaseName + ' — луп ' + bpmSlider.value + 'bpm', [{ name: fname, data: wav }]).then(renderLibrary);
   }
 
   bpmSlider.addEventListener('input', () => { bpmVal.textContent = bpmSlider.value; });
@@ -1445,8 +1314,6 @@
     attachShimmer(el);
   });
   document.querySelectorAll('.btn').forEach(el => attachShimmer(el));
-
-  renderLibrary();
 
 })();
 </script>
